@@ -3,8 +3,11 @@ class Cell
 {
 public:
 
-	void CheckIfAlive();
+	void SetToAlive();
 
+	void SetToDead();
+
+	bool GetIsAlive() const;
 
 
 private:
