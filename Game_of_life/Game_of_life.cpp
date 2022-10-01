@@ -21,7 +21,7 @@ int main()
 	std::cout << board.GetLiveCells() << std::endl;
 	std::cout << board.ToString();
 
-	//const auto& playground = board.GetPlayground();
+	const auto& playground = board.GetPlayground();
 	
 
 	int i = 0;
