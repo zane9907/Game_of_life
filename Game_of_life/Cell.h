@@ -1,4 +1,8 @@
 #pragma once
+#include <string>
+
+
+
 class Cell
 {
 public:
@@ -7,10 +11,12 @@ public:
 
 	void SetToDead();
 
-	bool GetIsAlive() const;
+	bool GetIsAlive() const;	
 
+	std::string ToString() const;
 
 private:
-	bool MisAlive = true;
+	std::string Mplaceholder = " ";
+	bool MisAlive = false;
 };
 
