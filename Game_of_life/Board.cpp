@@ -110,60 +110,44 @@ void Board::Step() {
 	}
 }
 
-int Board::CountNeighbours(const int row, const int col) const {
+int Board::CountNeighbours(const int i, const int j) const {
 	int count = 0;	
 
-	for (auto i = - 1; i <= 1; i++)
+
+	if ((i - 1 >= 0 && j - 1 >= 0) && (i + 1 < Mplayground.size() && j + 1 < Mplayground[0].size()))
 	{
-		for (auto j = -1; j <= 1; j++)
-		{
-			if (i == 0 && j == 0 && Mplayground[i][j].GetIsAlive())
-			{
+		//UP
+		if (Mplayground[i - 1][j].ToString() == "0")
+			count++;
 
-			}
-			if ((row + i >= 0 && col + j >= 0) && (row + i < Mplayground.size() && col + j < Mplayground[row].size()))
-			{
-				if (Mplayground[row + i][col + j].ToString() == "0")
-					count++;
-			}			
-		}
+		//DOWN
+		if (Mplayground[i + 1][j].ToString() == "0")
+			count++;
+
+		//LEFT
+		if (Mplayground[i][j - 1].ToString() == "0")
+			count++;
+
+		//RIGHT
+		if (Mplayground[i][j + 1].ToString() == "0")
+			count++;
+
+		//UP + LEFT
+		if (Mplayground[i - 1][j - 1].ToString() == "0")
+			count++;
+
+		//UP + RIGHT
+		if (Mplayground[i - 1][j + 1].ToString() == "0")
+			count++;
+
+		//DOWN + LEFT
+		if (Mplayground[i + 1][j - 1].ToString() == "0")
+			count++;
+
+		//DOWN + RIGHT
+		if (Mplayground[i + 1][j + 1].ToString() == "0")
+			count++;
 	}
-	
-
-	//if ((i - 1 >= 0 && j - 1 >= 0) && (i + 1 < Mplayground.size() && j + 1 < Mplayground[0].size()))
-	//{
-	//	//UP
-	//	if (Mplayground[i - 1][j].ToString() == "0")
-	//		count++;
-
-	//	//DOWN
-	//	if (Mplayground[i + 1][j].ToString() == "0")
-	//		count++;
-
-	//	//LEFT
-	//	if (Mplayground[i][j - 1].ToString() == "0")
-	//		count++;
-
-	//	//RIGHT
-	//	if (Mplayground[i][j + 1].ToString() == "0")
-	//		count++;
-
-	//	//UP + LEFT
-	//	if (Mplayground[i - 1][j - 1].ToString() == "0")
-	//		count++;
-
-	//	//UP + RIGHT
-	//	if (Mplayground[i - 1][j + 1].ToString() == "0")
-	//		count++;
-
-	//	//DOWN + LEFT
-	//	if (Mplayground[i + 1][j - 1].ToString() == "0")
-	//		count++;
-
-	//	//DOWN + RIGHT
-	//	if (Mplayground[i + 1][j + 1].ToString() == "0")
-	//		count++;
-	//}
 
 	return count;
 }
