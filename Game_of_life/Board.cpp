@@ -4,7 +4,7 @@
 
 std::random_device rD;
 std::default_random_engine rE(rD());
-std::uniform_int_distribution<int> rnd(0, 100);
+const std::uniform_int_distribution<int> rnd(0, 100);
 
 
 
@@ -58,9 +58,9 @@ Board::Board(const int height, const int width, const int top, const int left, c
 		item = std::vector<Cell>(width);
 	}
 
-	for (size_t i = 0; i < Mplayground.size(); i++)
+	for (auto i = 0; i < Mplayground.size(); i++)
 	{
-		for (size_t j = 0; j < Mplayground[i].size(); j++)
+		for (auto j = 0; j < Mplayground[i].size(); j++)
 		{
 			if (i >= top && j >= left)
 			{
@@ -76,7 +76,7 @@ void Board::InitializeGame() {
 	{
 		for (auto& col : row)
 		{
-			const float value = (float)rnd(rE) / 10.0f;
+			const float value = (float)rnd(rE) / 100.0f;
 			if (value <= Mprob)
 			{
 				col.SetToAlive();
@@ -84,6 +84,88 @@ void Board::InitializeGame() {
 			}
 		}
 	}
+}
+
+void Board::Step() {
+	for (auto i = 0; i < Mplayground.size(); i++)
+	{
+		for (auto j = 0; j < Mplayground[i].size(); j++)
+		{
+			int count = CountNeighbours(i, j);
+			if (Mplayground[i][j].GetIsAlive())
+			{
+				if (count < 2 || count > 4) {
+					Mplayground[i][j].SetToDead();	
+					DecLiveCells();
+				}
+			}
+			else 
+			{
+				if (count == 3) {
+					Mplayground[i][j].SetToAlive();		
+					IncLiveCells();
+				}
+			}
+		}
+	}
+}
+
+int Board::CountNeighbours(const int row, const int col) const {
+	int count = 0;	
+
+	for (auto i = - 1; i <= 1; i++)
+	{
+		for (auto j = -1; j <= 1; j++)
+		{
+			if (i == 0 && j == 0 && Mplayground[i][j].GetIsAlive())
+			{
+
+			}
+			if ((row + i >= 0 && col + j >= 0) && (row + i < Mplayground.size() && col + j < Mplayground[row].size()))
+			{
+				if (Mplayground[row + i][col + j].ToString() == "0")
+					count++;
+			}			
+		}
+	}
+	
+
+	//if ((i - 1 >= 0 && j - 1 >= 0) && (i + 1 < Mplayground.size() && j + 1 < Mplayground[0].size()))
+	//{
+	//	//UP
+	//	if (Mplayground[i - 1][j].ToString() == "0")
+	//		count++;
+
+	//	//DOWN
+	//	if (Mplayground[i + 1][j].ToString() == "0")
+	//		count++;
+
+	//	//LEFT
+	//	if (Mplayground[i][j - 1].ToString() == "0")
+	//		count++;
+
+	//	//RIGHT
+	//	if (Mplayground[i][j + 1].ToString() == "0")
+	//		count++;
+
+	//	//UP + LEFT
+	//	if (Mplayground[i - 1][j - 1].ToString() == "0")
+	//		count++;
+
+	//	//UP + RIGHT
+	//	if (Mplayground[i - 1][j + 1].ToString() == "0")
+	//		count++;
+
+	//	//DOWN + LEFT
+	//	if (Mplayground[i + 1][j - 1].ToString() == "0")
+	//		count++;
+
+	//	//DOWN + RIGHT
+	//	if (Mplayground[i + 1][j + 1].ToString() == "0")
+	//		count++;
+	//}
+
+	return count;
 }
 
 
@@ -99,6 +181,10 @@ void Board::IncLiveCells() {
 	MliveCells++;
 }
 
+void Board::DecLiveCells() {
+	MliveCells--;
+}
+
 float Board::GetProbability() const {
 	return Mprob;
 }
@@ -107,17 +193,17 @@ void Board::SetProbability(const float prob) {
 	Mprob = prob;
 }
 
-std::string Board::ToString() const {
-	std::string output = "";
-
-	for (const auto& row : Mplayground)
-	{
-		for (const auto& col : row)
-		{
-			output += col.ToString();
-		}
-		output += "\n";
-	}
-
-	return output;
-}
+//std::string Board::ToString() const {
+//	std::string output = "";
+//
+//	for (const auto& row : Mplayground)
+//	{
+//		for (const auto& col : row)
+//		{
+//			output += col.ToString();
+//		}
+//		output += "\n";
+//	}
+//
+//	return output;
+//}
